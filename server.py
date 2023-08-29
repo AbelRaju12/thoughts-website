@@ -2,7 +2,7 @@ from flask import Flask, render_template, redirect, flash, url_for
 from forms import loginform, registerform
 
 app = Flask(__name__, template_folder='views') #__name__ name of the module, to specify a template folder other than 'templates
-app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
+app.config['SECRET_KEY'] = '2d2953bb0185f38b3b53716d9b3cad85'
 
 @app.route("/")
 def home():
@@ -11,13 +11,18 @@ def home():
 @app.route("/register", methods = ['GET', 'POST'])
 def register():
     form = registerform()
+    if form.validate_on_submit():
+        flash("Account created!", "success")
+        return redirect(url_for('login'))
     return render_template('register.html', form = form)
 
 @app.route("/login", methods = ['GET', 'POST'])
 def login():
     form = loginform()
+    if form.validate_on_submit():
+        flash("Login successful!", "success")
+        return redirect(url_for('home'))
     return render_template('login.html', form = form)
-
 
 if __name__ == "__main__":
     app.run(port = 3000, debug = "True")
